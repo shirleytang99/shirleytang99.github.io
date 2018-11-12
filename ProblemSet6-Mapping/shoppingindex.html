@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SHOPPING INDEX</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/leaflet.js"></script>
+    <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js">
+    </script>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/full-slider.css" rel="stylesheet">
+
+</head>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">CHIC ON BUDGET</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">HOMEPAGE
+          </a>
+
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="what do I wear.html">WHAT DO I WEAR</a>
+       </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="trending.html">WHAT'S ON TREND</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="fashiontips.html">FASHION BOLGS</a>
+        </li>
+
+        <li class="nav-item active">
+          <a class="nav-link" href="shoppingindex.html">SHOPPING INDEX</a>
+          <span class="sr-only">(current)</span>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  <body>
+   <style>
+    h5.ex1{margin-top:60px;}
+    </style>
+    <center>
+    <h5 class="ex1">TOP10 Cites in the GMV Ranking on Taobao11.11 ShoppingDay</h5>
+    <p>
+    <button type="button" class="btn btn-info" id='roll_up' onclick="show_districts();">Show TOP1O Cites</button><br>
+    </p>
+    <div id="map" style="width: 960px; height: 500px"></div>
+    </center>
+
+
+<script>
+  var mapboxTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a>', maxZoom: 18,})
+
+  var map = L.map('map')
+        .addLayer(mapboxTiles)
+        .setView([35.916667, 103.666667], 4);
+
+  var items = [];
+  var airtable_read_endpoint = "https://api.airtable.com/v0/appTLnwsg6opF4Dcj/Annually%20GMV%20of%20Taobao%20on%2011.11?api_key=keytIXhS7YQcZwe4a";
+  var data = [];
+  $.getJSON(airtable_read_endpoint, function(result) {
+         $.each(result.records, function(key,value) {
+             items = {};
+                 items["City"] = value.fields.City;
+                 items["GMVRanking"] = value.fields.GMVRanking;
+                 items["latitude"] = value.fields.latitude;
+                 items["longitude"] = value.fields.longitude;
+                 data.push(items);
+                 console.log(items);
+            }); // end .each
+    }); // end getJSON
+</script>
+
+<script>
+function show_districts(){
+  for (var i in data) {
+      var latlng = L.latLng({ lat: data[i].latitude, lng: data[i].longitude });
+      L.marker( latlng )
+          .bindPopup( '<img src="shoppingcart.png" width = "40px"><br>' + data[i].GMVRanking + '</a><br>' + data[i].City + '</a>')
+          .addTo(map);
+  }
+}
+</script>
+
+</body>
+</html>
