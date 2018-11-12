@@ -71,11 +71,20 @@
 
 
 <script>
-  var mapboxTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a>', maxZoom: 18,})
+  var mapboxTiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  {attribution: 'Map data &copy; <a href="https://openstreetmap.org">OpenStreetMap</a>', maxZoom: 18,})
 
-  var map = L.map('map')
+  var firefoxIcon = L.icon({
+          iconUrl: 'http://joshuafrazier.info/images/firefox.svg',
+          iconSize: [38, 95], // size of the icon
+          popupAnchor: [0,-15]
+          });
+
+         var map = L.map('map')
         .addLayer(mapboxTiles)
         .setView([35.916667, 103.666667], 4);
+
+
 
   var items = [];
   var airtable_read_endpoint = "https://api.airtable.com/v0/appTLnwsg6opF4Dcj/Annually%20GMV%20of%20Taobao%20on%2011.11?api_key=keytIXhS7YQcZwe4a";
@@ -87,18 +96,22 @@
                  items["GMVRanking"] = value.fields.GMVRanking;
                  items["latitude"] = value.fields.latitude;
                  items["longitude"] = value.fields.longitude;
+                 items["url"] = value.fields.url;
                  data.push(items);
                  console.log(items);
             }); // end .each
     }); // end getJSON
+
+
+
 </script>
 
 <script>
 function show_districts(){
   for (var i in data) {
       var latlng = L.latLng({ lat: data[i].latitude, lng: data[i].longitude });
-      L.marker( latlng )
-          .bindPopup( '<img src="shoppingcart.png" width = "40px"><br>' + data[i].GMVRanking + '</a><br>' + data[i].City + '</a>')
+      L.marker( latlng, {icon: firefoxIcon})
+          .bindPopup('<a href="' + data[i].url + '" target="_blank">' +'<img src="shoppingcart.png" width = "40px"><br>' + data[i].GMVRanking + '</a><br>' + data[i].City + '</a>')
           .addTo(map);
   }
 }
