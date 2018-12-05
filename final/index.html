@@ -10,11 +10,18 @@ h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=UA-130488613-1"></script>
   <script>
+
+  window['GoogleAnalyticsObject'] = 'ga';
+    window['ga'] = window['ga'] || function() {
+      (window['ga'].q = window['ga'].q || []).push(arguments)
+    };
+
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    ga('require', 'GTM-TZLKTJ6');
+
     gtag('config', 'UA-130488613-1', { 'optimize_id': 'GTM-TZLKTJ6'});
+    ga('require', 'GTM-TZLKTJ6');
   </script>
 
 
